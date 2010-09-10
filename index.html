@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="description" content="">
+
+  <title>Tetris template designer</title>
+  <link rel="stylesheet" href="stylesheets/flick/jquery-ui-1.8.4.custom.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  <style type="text/css" media="screen">
+    /* >> The Magnificent CLEARFIX << j.mp/phayesclearfix */
+    .clearfix:after  { content: "\0020"; display: block; height: 0; clear: both; visibility: hidden; }
+    /* Fix clearfix: blueprintcss.lighthouseapp.com/projects/15318/tickets/5-extra-margin-padding-bottom-of-page */
+    .clearfix { zoom: 1; }
+    body { padding: 0; margin: 0; font: 0.69em/1.5em Georgia; background: #D1D8DF; }
+    form { margin: 0 0 20px 0; border-bottom: 1px solid #EEE; padding: 20px; background: #31404F; color: #A4ADB0; }
+    h1 { color: #EEE; font-weight: normal; font-size: 3em; }
+    h2 { font-size: 1.4em; font-weight: normal; margin-bottom: 2em; }
+    a { color: #FC0284; }
+    label { display: block; float: left; padding: 0 10px 0 0 ; width: 150px; text-align: right; font-style: italic; line-height: 1.8em;}
+    .line { margin-bottom: 10px; }
+    #designer { margin: 20px; position: relative; }
+    #background { position: absolute; top: 0; left: 0; }
+    #overlay { position: absolute; top: 0; left: 0; width: 100px; height: 100px; border: 1px dotted #AAA; overflow: visible; }
+    #overlay ul { margin: 0; padding: 0; list-style: none; }
+    #overlay li { float: left; margin: 0 1px 1px 0; border-right: 1px; width: 99px; height: 99px; background: cyan; opacity: 0.3; }
+    #overlay .active { opacity: 0.75; }
+    #output { padding: 20px; }
+    #output h2 { margin-bottom: 1em; }
+    #output code { padding: 10px; background: #FFF; }
+    footer { display: block; padding: 50px 20px 20px 20px; color: #999; font-style: italic; }
+    
+  </style>
+  
+  <script src="http://www.google.com/jsapi?key="></script>
+  <script type="text/javascript">
+    google.load("jquery", "1.4");
+    google.load("jqueryui", "1.8.1");
+  </script>
+  <script type="text/javascript" charset="utf-8">
+    // Prefix = ttd_
+    
+    /* DOM Ready */
+    $(function(){
+      $('#overlay').resizable({
+        resize: function(event, ui){
+          ttd_settings.setGrid(ui.size.width, ui.size.height);
+        }
+      });
+      ttd_settings.setup();
+    });
+    
+    var ttd_settings = {
+      
+      setup: function(){
+        
+        this.setGridCellDimensions();
+        this.setGrid($('#w').val(), $('#h').val());
+        
+        $('#w, #h').keyup(function(){
+          ttd_settings.setGridCellDimensions();
+        });
+        
+        $('#overlay li').live('click', function(){
+          $(this).toggleClass('active');
+          ttd_settings.createOutput();
+        });
+        
+        $('#File').change(function(){
+          var img = document.getElementById('background');
+          var input = $(this)[0];
+          img.src = input.files[0].getAsDataURL();
+        });
+      },
+      
+      setGridCellDimensions: function(){
+        $('#overlay li').css({ 'width': ($('#w').val() - 1) + 'px', 'height': ($('#h').val() - 1) + 'px' });
+      },
+      
+      setGrid: function(overlay_w, overlay_h){
+        var cell_w  = $('#w').val();
+        var cell_h  = $('#h').val();
+        var grid    = $('#overlay ul');
+        var cells   = $('#overlay li');
+        
+        var cell_fit_w = Math.ceil(overlay_w / cell_w);
+        var cell_fit_h = Math.ceil(overlay_h / cell_h);
+        
+        var new_cell_count = cell_fit_w * cell_fit_h;
+        
+        $('#overlay ul, #designer').css({ 
+          'width': (cell_fit_w * cell_w), 
+          'height': (cell_fit_h * cell_h)
+        });
+
+        if (new_cell_count > cells.length) {
+          var diff = new_cell_count - cells.length
+          for (i=0; i<diff; i++) {
+            grid.append($('<li></li>'));
+          }
+        } else {
+          var diff = cells.length - new_cell_count
+          for (i=0; i<diff; i++) {
+            $(cells[cells.length - i - 1]).remove();
+          }
+        }
+        
+        this.createOutput();
+      },
+    
+      createOutput: function(){
+        var cell_fit_w = $('#overlay ul').width() / $('#w').val();
+        
+        var result = [cell_fit_w, []];
+        
+        $('#overlay li').each(function(){
+          var value = 0;
+          if ($(this).hasClass('active')) {
+            value = 1;
+          }
+          result[1].push(value);
+        });
+        
+        var output = '[' + result[0].toString() + ', [' + result[1].toString() + ']]'
+        $('#output code').html(output);
+      }
+    }
+  </script>
+  
+</head>
+<body>
+
+<form action="#" method="get">
+  <h1>Tetris template designer</h1>
+  <h2>Choose the size (px) of your grid cell and set your background image.</h2>
+  <div class="line">
+    <label for="w">Width</label>
+    <input id="w" name="w" type="text" value="100">
+  </div>
+  <div class="line">
+    <label for="h">Height</label>
+    <input id="h" name="h" type="text" value="100">
+  </div>
+  <div class="line">
+    <label for="File">Background image</label>
+    <input id="File" name="File" type="file" />
+  </div>
+</form>
+
+<div id="designer">
+  <img id="background" src="" alt="">
+  <div id="overlay">
+    <ul class="clearfix"></ul>
+  </div>
+</div>
+
+<div id="output">
+  <h2>Output</h2>
+  <code></code>
+</div>
+
+<footer>
+  Crafted by <a href="http://www.mrhenry.be">Mr. Henry</a> &nbsp; &copy; 2010. 
+</footer>
+
+</body>
+</html>
