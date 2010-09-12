@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="description" content="">
 
-  <title>Tetris template designer</title>
+  <title>Tetris Template Designer &trade;</title>
   <link rel="stylesheet" href="stylesheets/flick/jquery-ui-1.8.4.custom.css" media="screen">
   <link rel="stylesheet" href="stylesheets/screen.css" media="screen">
   
@@ -13,8 +13,14 @@
     google.load("jquery", "1.4");
     google.load("jqueryui", "1.8.1");
   </script>
+  <script src="javascripts/mustache.js"></script>
   <script src="javascripts/application.js"></script>
-  
+  <style type="text/css" media="screen">
+    .template-x { width: 0; height: 0; }
+    .template-x hgroup { position: absolute; top: 0; left: 0; width: 0; height: 0; }
+    .template-x p { position: absolute; top: 0; left: 0; width: 0; height: 0; }
+    .template-x .img-1 { position: absolute; top: 0; left: 0; width: 0; height: 0; }
+  </style>
 </head>
 <body>
 
@@ -58,15 +64,23 @@
   </div><!-- End #overlay -->
 </div><!-- End #designer -->
 
-<div id="output-grid">
+<div id="output-grid" class="output">
   <h2>Grid output</h2>
   <code></code>
 </div>
 
-<div id="output-html">
+<div id="output-html" class="output">
   <h2>HTML output</h2>
   <code></code>
   <div class="template"></div>
+</div>
+
+<div id="output-css" class="output">
+  <h2>CSS output</h2>
+  <code></code>
+  <div class="template">
+    
+  </div>
 </div>
 
 <footer>

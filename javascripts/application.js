@@ -4,11 +4,11 @@
  *
  */
 
+
 /* DOM Ready */
 $(function(){
   ttd_settings.setup();
 });
-
 
 /* Controllers */
 var ttd_settings = {
@@ -51,6 +51,7 @@ var ttd_settings = {
     // Add image
     $('#add-image').click(function(){
       ttd_canvas.addImage();
+      return false;
     });
     
   },
@@ -97,8 +98,9 @@ var ttd_grid = {
         $(cells[cells.length - i - 1]).remove();
       }
     }
-    ttd_output.grid();
-    ttd_output.html();
+    
+    // Write output
+    ttd_output.write();
   },
   
   toggle: function(){
@@ -129,6 +131,7 @@ var ttd_canvas = {
       },
       stop: function(event, ui){
         ttd_canvas.removeInfo($(this));
+        ttd_output.write();
       }
     });
     
@@ -143,6 +146,7 @@ var ttd_canvas = {
           },
           stop: function(event, ui){
             ttd_canvas.removeInfo($(this));
+            ttd_output.write();
           }
         });
       },
@@ -276,7 +280,7 @@ var ttd_canvas = {
     var idx         = images.length;
     var ratio_text  = $('<span></span>').addClass('ratio').attr('rel', 0).html('2x3');
     var id          = $('<span></span>').addClass('id').html(idx + 1);
-    var li          = $('<li></li>').addClass('img-' + idx + 1).append(id).append(ratio_text);
+    var li          = $('<li></li>').addClass('img-' + (idx + 1)).append(id).append(ratio_text);
     
     $('#canvas .images').append(li);
     ttd_canvas.setup();
@@ -284,6 +288,12 @@ var ttd_canvas = {
 }
 
 var ttd_output = {
+  
+  write: function(){
+    this.grid();
+    this.html();
+    this.css();
+  },
   
   grid: function(){
     var cell_fit_w  = $('#overlay ul').width() / $('#w').val();
@@ -317,6 +327,45 @@ var ttd_output = {
     template.attr('id','').addClass('template-x').appendTo('#output-html code');
     var output = $('#output-html code').html().replace(/</gm, '&lt;').replace(/>/gm, '&gt;').replace(/\n/gm, '<br>');
     $('#output-html code').html(output);
+  },
+  
+  css: function(){
+    $.get('templates/template.css', function(data){
+      var template    = $('#canvas');
+      var hgroup      = template.find('hgroup');
+      var paragraph   = template.find('p');
+      var images      = []; 
+      
+      template.find('.images li').each(function(){
+        var id = $(this).attr('class').match(/img-\d*/);
+        images.push({
+          id: id[0],
+          top: $(this).css('top'),
+          left: $(this).css('left'),
+          width: $(this).css('width'),
+          height: $(this).css('height')
+        })
+      });
+      
+      console.log(images);
+      var view = {
+        template_width: template.css('width'),
+        template_height: template.css('height'),
+        hgroup_top: hgroup.css('top'),
+        hgroup_left: hgroup.css('left'),
+        hgroup_width: hgroup.css('width'),
+        hgroup_height: hgroup.css('height'),
+        paragraph_top: paragraph.css('top'),
+        paragraph_left: paragraph.css('left'),
+        paragraph_width: paragraph.css('width'),
+        paragraph_height: paragraph.css('height'),
+        images: images
+      }
+      var output = Mustache.to_html(data, view);
+      $('#output-css code').html(output.replace(/\n/gm, '<br>'));
+    });
+    
+    
   }
   
 }

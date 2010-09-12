@@ -37,12 +37,9 @@ label { display: block; float: left; padding: 0 10px 0 0 ; width: 150px; text-al
 #overlay li { float: left; margin: 0 1px 1px 0; border-right: 1px; width: 99px; height: 99px; background: cyan; opacity: 0.3; }
 #overlay .active { opacity: 0.75; }
 
-#output-grid,
-#output-html { padding: 20px; }
-#output-grid,
-#output-html h2 { margin-bottom: 1em; }
-#output-grid code,
-#output-html code { display: block; padding: 10px; background: #FFF; white-space: nowrap; }
-#output-html .template { display: none; }
+.output { padding: 20px; }
+.output h2 { margin-bottom: 1em; }
+.output code { display: block; padding: 10px; background: #FFF; white-space: nowrap; }
+.output .template { display: none; }
 
 footer { display: block; padding: 50px 20px 20px 20px; color: #999; font-style: italic; }

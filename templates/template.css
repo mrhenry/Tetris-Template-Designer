@@ -1,0 +1,6 @@
+.template-x { width: {{template_width}}; height: {{template_height}}; }
+.template-x hgroup { position: absolute; top: {{hgroup_top}}; left: {{hgroup_left}}; width: {{hgroup_width}}; height: {{hgroup_height}}; }
+.template-x p { position: absolute; top: {{paragraph_top}}; left: {{paragraph_left}}; width: {{paragraph_width}}; height: {{paragraph_height}}; }
+{{#images}}
+.template-x .{{id}} { position: absolute; top: {{top}}; left: {{left}}; width: {{width}}; height: {{height}}; }
+{{/images}}
