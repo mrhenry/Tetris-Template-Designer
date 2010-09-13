@@ -33,7 +33,7 @@ var ttd_settings = {
     // Grid block clicks
     $('#overlay li').live('click', function(){
       $(this).toggleClass('active');
-      ttd_grid.createOutput();
+      ttd_output.write();
     });
     
     // Use local image as guide
@@ -117,13 +117,21 @@ var ttd_grid = {
 var ttd_canvas = {
   
   setup: function(){
-    var canvas    = $('#canvas');
-    var editables = $('#canvas hgroup, #canvas p, #canvas .images li');
+
+    // Resize canvas
+    $('#canvas').resizable({
+      resize: function(event, ui){
+        ttd_grid.buildGrid(ui.size.width, ui.size.height);
+      },
+      stop: function(event, ui){
+        ttd_grid.buildGrid(ui.size.width, ui.size.height);
+      }
+    });
     
     this.setupImages();
     
     // Drag
-    editables.draggable({
+    $('#canvas hgroup, #canvas p, #canvas .images li').draggable({
       containment: $('#canvas'),
       grid: [5,5],
       drag: function(event, ui){
@@ -135,8 +143,8 @@ var ttd_canvas = {
       }
     });
     
-    // Resize
-    editables.hover( // Done in hover to avoid error with canvas resize
+    // Resize title & paragraph
+    $('#canvas hgroup, #canvas p').mouseenter( // Done in hover to avoid error with canvas resize
       function(){
         $(this).resizable({
           grid: [5,5],
@@ -149,18 +157,10 @@ var ttd_canvas = {
             ttd_output.write();
           }
         });
-      },
-      function(){}
+      }
     );
     
-    canvas.resizable({
-      resize: function(event, ui){
-        ttd_grid.buildGrid(ui.size.width, ui.size.height);
-      },
-      stop: function(event, ui){
-        ttd_grid.buildGrid(ui.size.width, ui.size.height);
-      }
-    });
+    
     
   },
   
@@ -195,6 +195,9 @@ var ttd_canvas = {
   
   setupImages: function(){
     $('#canvas .images li').each(function(){
+      
+      ttd_canvas.setImageRatio($(this));
+      
       // Set delete button
       var delete_btn;
       if ($(this).find('.delete_btn').length > 0) {
@@ -224,22 +227,35 @@ var ttd_canvas = {
     
     // Ratio button click
     $('.ratio_btn').click(function(){
-      ttd_canvas.setImageRatio($(this));
+      ttd_canvas.changeImageRatio($(this).closest('li'));
     });
   },
   
   setImageRatio: function(el){
-    var image      = el.closest('li');
-    var ratio_text = el.siblings('.ratio');
-    var ratios = [
-      {'name': '2x3',  'width': 120, 'height': 180 },
-      {'name': '3x2',  'width': 180, 'height': 120 }, 
-      {'name': '3x4',  'width': 120, 'height': 160 }, 
-      {'name': '4x3',  'width': 160, 'height': 140 }, 
-      {'name': '16x9', 'width': 160, 'height': 90  }, 
-      {'name': '9x16', 'width': 90,  'height': 160 }, 
-      {'name': '1x1',  'width': 100, 'height': 100 }
-    ];
+    var image      = el;
+    var ratio_text = image.find('.ratio');
+    var ratios = this.ratios();
+    var current_ratio_idx = parseInt(ratio_text.attr('rel'));
+    
+    // Reload events
+    image.resizable('destroy')
+         .resizable({
+            aspectRatio: ratios[current_ratio_idx].name,
+            grid: [5,5],
+            containment: $('#canvas'),
+            resize: function(event, ui){
+              ttd_canvas.showInfo($(this));
+            },
+            stop: function(event, ui){
+              ttd_canvas.removeInfo($(this));
+            }
+    });
+  },
+  
+  changeImageRatio: function(el){
+    var image      = el;
+    var ratio_text = image.find('.ratio');
+    var ratios = this.ratios();
     var current_ratio_idx = parseInt(ratio_text.attr('rel'));
     var next_radio_idx;
     var new_ratio;
@@ -263,27 +279,40 @@ var ttd_canvas = {
     // Reload events
     image.resizable('destroy')
          .resizable({
-      aspectRatio: new_ratio.name.replace('x','/'),
-      grid: [5,5],
-      containment: $('#canvas'),
-      resize: function(event, ui){
-        ttd_canvas.showInfo($(this));
-      },
-      stop: function(event, ui){
-        ttd_canvas.removeInfo($(this));
-      }
+            aspectRatio: new_ratio.name,
+            grid: [5,5],
+            containment: $('#canvas'),
+            resize: function(event, ui){
+              ttd_canvas.showInfo($(this));
+            },
+            stop: function(event, ui){
+              ttd_canvas.removeInfo($(this));
+            }
     });
   },
   
   addImage: function(){
     var images      = $('#canvas .images li');
     var idx         = images.length;
-    var ratio_text  = $('<span></span>').addClass('ratio').attr('rel', 0).html('2x3');
+    var ratio_text  = $('<span></span>').addClass('ratio').attr('rel', 0).html('2/3');
     var id          = $('<span></span>').addClass('id').html(idx + 1);
     var li          = $('<li></li>').addClass('img-' + (idx + 1)).append(id).append(ratio_text);
     
     $('#canvas .images').append(li);
-    ttd_canvas.setup();
+    
+    this.setup();
+  },
+  
+  ratios: function(){
+    return [
+      {'name': '2/3',  'width': 120, 'height': 180 },
+      {'name': '3/2',  'width': 180, 'height': 120 }, 
+      {'name': '3/4',  'width': 120, 'height': 160 }, 
+      {'name': '4/3',  'width': 160, 'height': 140 }, 
+      {'name': '16/9', 'width': 160, 'height': 90  }, 
+      {'name': '9/16', 'width': 90,  'height': 160 }, 
+      {'name': '1/1',  'width': 100, 'height': 100 }
+    ];
   }
 }
 
@@ -331,11 +360,13 @@ var ttd_output = {
   
   css: function(){
     $.get('templates/template.css', function(data){
+      // Get elements info
       var template    = $('#canvas');
       var hgroup      = template.find('hgroup');
       var paragraph   = template.find('p');
       var images      = []; 
       
+      // Get image info
       template.find('.images li').each(function(){
         var id = $(this).attr('class').match(/img-\d*/);
         images.push({
@@ -347,18 +378,18 @@ var ttd_output = {
         })
       });
       
-      console.log(images);
+      // Prepare mustache 
       var view = {
-        template_width: template.css('width'),
-        template_height: template.css('height'),
-        hgroup_top: hgroup.css('top'),
-        hgroup_left: hgroup.css('left'),
-        hgroup_width: hgroup.css('width'),
-        hgroup_height: hgroup.css('height'),
-        paragraph_top: paragraph.css('top'),
-        paragraph_left: paragraph.css('left'),
-        paragraph_width: paragraph.css('width'),
-        paragraph_height: paragraph.css('height'),
+        template_width    : template.css('width'),
+        template_height   : template.css('height'),
+        hgroup_top        : hgroup.css('top'),
+        hgroup_left       : hgroup.css('left'),
+        hgroup_width      : hgroup.css('width'),
+        hgroup_height     : hgroup.css('height'),
+        paragraph_top     : paragraph.css('top'),
+        paragraph_left    : paragraph.css('left'),
+        paragraph_width   : paragraph.css('width'),
+        paragraph_height  : paragraph.css('height'),
         images: images
       }
       var output = Mustache.to_html(data, view);
