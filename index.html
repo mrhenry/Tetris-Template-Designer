@@ -23,7 +23,8 @@
   </style>
 </head>
 <body>
-
+  
+<!-- SETTINGS -->
 <form action="#" method="get">
   <h1>Tetris template designer</h1>
   <h2>Choose the size (px) of your grid cell and set your background image.</h2>
@@ -44,6 +45,13 @@
   </div>
   <div class="line">
     <label for="show-grid">Show grid</label><input id="show-grid" name="show-grid" type="checkbox">
+  </div>
+  <div class="line radio css-format">
+    <p>In which format you want your CSS output?</p>
+    <input type="radio" id="css-format-css" name="css-format" value="css">
+    <label for="css-format-css">CSS</label>
+    <input type="radio" id="css-format-scss" name="css-format" value="scss" checked="checked">
+    <label for="css-format-scss">SCSS</label>
   </div>
 </form>
 

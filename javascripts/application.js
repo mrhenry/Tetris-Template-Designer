@@ -54,7 +54,12 @@ var ttd_settings = {
       return false;
     });
     
-  },
+    // CSS format
+    $('.css-format input, .css-format label').click(function(){
+      ttd_output.write();
+    });
+    
+  }
    
 };
 
@@ -80,10 +85,11 @@ var ttd_grid = {
       'width':  (cell_fit_w * cell_w), 
       'height': (cell_fit_h * cell_h)
     });
-
+    
+    var diff;
     if (new_cell_count > cells.length) {
       // Create new cells
-      var diff = new_cell_count - cells.length
+      diff = new_cell_count - cells.length;
       for (i=0; i<diff; i++) {
         grid.append($('<li></li>'));
       }
@@ -93,7 +99,7 @@ var ttd_grid = {
       });
     } else {
       // Remove cells
-      var diff = cells.length - new_cell_count;
+      diff = cells.length - new_cell_count;
       for (i=0; i<diff; i++) {
         $(cells[cells.length - i - 1]).remove();
       }
@@ -160,8 +166,6 @@ var ttd_canvas = {
       }
     );
     
-    
-    
   },
   
   resize: function(w, h){
@@ -171,7 +175,7 @@ var ttd_canvas = {
   showInfo: function(el){
     var info;
     if (el.find('.info').length > 0) {
-      info = el.find('.info')
+      info = el.find('.info');
     } else {
       info = $('<span></span>');
       info.appendTo(el).hide();
@@ -235,7 +239,7 @@ var ttd_canvas = {
     var image      = el;
     var ratio_text = image.find('.ratio');
     var ratios = this.ratios();
-    var current_ratio_idx = parseInt(ratio_text.attr('rel'));
+    var current_ratio_idx = parseInt(ratio_text.attr('rel'), 10);
     
     // Reload events
     image.resizable('destroy')
@@ -256,7 +260,7 @@ var ttd_canvas = {
     var image      = el;
     var ratio_text = image.find('.ratio');
     var ratios = this.ratios();
-    var current_ratio_idx = parseInt(ratio_text.attr('rel'));
+    var current_ratio_idx = parseInt(ratio_text.attr('rel'), 10);
     var next_radio_idx;
     var new_ratio;
     
@@ -317,7 +321,7 @@ var ttd_canvas = {
       {'name': '1/1',  'width': 100, 'height': 100 }
     ];
   }
-}
+};
 
 var ttd_output = {
   
@@ -343,7 +347,7 @@ var ttd_output = {
     
     // Get image ratios
     $('#canvas .images li').each(function(){
-      var ratio = parseInt($(this).find('.ratio').attr('rel'));
+      var ratio = parseInt($(this).find('.ratio').attr('rel'), 10);
       output[2].push('\'' + ratios[ratio].name + '\'');
     });
     
@@ -369,7 +373,8 @@ var ttd_output = {
   },
   
   css: function(){
-    $.get('templates/template.css', function(data){
+    var format = $('.css-format input:radio:checked').val();
+    $.get('templates/template.' + format, function(data){
       // Get elements info
       var template    = $('#canvas');
       var hgroup      = template.find('hgroup');
@@ -385,7 +390,7 @@ var ttd_output = {
           left: $(this).css('left'),
           width: $(this).css('width'),
           height: $(this).css('height')
-        })
+        });
       });
       
       // Prepare mustache 
@@ -401,12 +406,11 @@ var ttd_output = {
         paragraph_width   : paragraph.css('width'),
         paragraph_height  : paragraph.css('height'),
         images: images
-      }
+      };
       var output = Mustache.to_html(data, view);
-      $('#output-css code').html(output.replace(/\n/gm, '<br>'));
+      $('#output-css code').html(output.replace(/\n/gm, '<br>').replace(/\t/gm, '&nbsp;&nbsp;'));
     });
-    
     
   }
   
-}
+};

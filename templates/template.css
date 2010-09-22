@@ -3,4 +3,5 @@
 .template-x .intro { position: absolute; top: {{paragraph_top}}; left: {{paragraph_left}}; width: {{paragraph_width}}; height: {{paragraph_height}}; }
 {{#images}}
 .template-x .{{id}} { position: absolute; top: {{top}}; left: {{left}}; width: {{width}}; height: {{height}}; }
+.template-x .{{id}} img { width: {{width}}; }
 {{/images}}

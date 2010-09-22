@@ -2,13 +2,17 @@
 .clearfix:after  { content: "\0020"; display: block; height: 0; clear: both; visibility: hidden; }
 /* Fix clearfix: blueprintcss.lighthouseapp.com/projects/15318/tickets/5-extra-margin-padding-bottom-of-page */
 .clearfix { zoom: 1; }
-body { padding: 0; margin: 0; font: 0.69em/1.5em Georgia; background: #D1D8DF; }
-form { margin: 0 0 20px 0; border-bottom: 1px solid #EEE; padding: 20px; background: #31404F; color: #A4ADB0; }
-h1 { color: #EEE; font-weight: normal; font-size: 3em; }
-h2 { font-size: 1.4em; font-weight: normal; margin-bottom: 2em; }
-a { color: #FC0284; }
-label { display: block; float: left; padding: 0 10px 0 0 ; width: 150px; text-align: right; font-style: italic; line-height: 1.8em;}
-.line { margin-bottom: 10px; clear: both; }
+body    { padding: 0; margin: 0; font: 0.69em/1.5em Georgia; background: #D1D8DF; }
+form    { margin: 0 0 20px 0; border-bottom: 1px solid #EEE; padding: 20px; background: #31404F; color: #A4ADB0; }
+h1      { color: #EEE; font-weight: normal; font-size: 3em; }
+h2      { font-size: 1.4em; font-weight: normal; margin-bottom: 2em; }
+a       { color: #FC0284; }
+.line   { margin-bottom: 10px; clear: both; }
+
+label,
+.radio p        { display: block; float: left; padding: 0 10px 0 0 ; width: 150px; text-align: right; font-style: italic; line-height: 1.8em;}
+.radio p        { margin-top: 0; }
+.radio label    { display: inline; float: none; width: auto; }
 
 #designer { margin: 20px; position: relative; }
 #background { position: absolute; top: 0; left: 0; }
