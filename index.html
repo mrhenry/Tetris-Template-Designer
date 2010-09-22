@@ -18,7 +18,7 @@
   <style type="text/css" media="screen">
     .template-x { width: 0; height: 0; }
     .template-x hgroup { position: absolute; top: 0; left: 0; width: 0; height: 0; }
-    .template-x p { position: absolute; top: 0; left: 0; width: 0; height: 0; }
+    .template-x .intro { position: absolute; top: 0; left: 0; width: 0; height: 0; }
     .template-x .img-1 { position: absolute; top: 0; left: 0; width: 0; height: 0; }
   </style>
 </head>
@@ -47,23 +47,25 @@
   </div>
 </form>
 
+<!-- DESIGNER -->
 <div id="designer">
   <img id="background" src="" alt="">
-  <div id="canvas">
+  <article id="canvas">
     <hgroup>
         <h2><a href="/" title="View this project in detail">Title</a></h2>
         <h3>Category</h3>
       </hgroup>
-      <p>Text</p>
+      <div class="intro">Text</div>
       <ul class="images">
         <li class="img-1"><span class="id">1</span> <span class="ratio" rel="0">2x3</span><img src="" alt=""></li>
       </ul>
-  </div><!-- End #canvas -->
+  </article><!-- End #canvas -->
   <div id="overlay">
     <ul class="clearfix"></ul>
   </div><!-- End #overlay -->
 </div><!-- End #designer -->
 
+<!-- OUTPUT -->
 <div id="output-grid" class="output">
   <h2>Grid output</h2>
   <code></code>

@@ -131,7 +131,7 @@ var ttd_canvas = {
     this.setupImages();
     
     // Drag
-    $('#canvas hgroup, #canvas p, #canvas .images li').draggable({
+    $('#canvas hgroup, #canvas .intro, #canvas .images li').draggable({
       containment: $('#canvas'),
       grid: [5,5],
       drag: function(event, ui){
@@ -144,7 +144,7 @@ var ttd_canvas = {
     });
     
     // Resize title & paragraph
-    $('#canvas hgroup, #canvas p').mouseenter( // Done in hover to avoid error with canvas resize
+    $('#canvas hgroup, #canvas .intro').mouseenter( // Done in hover to avoid error with canvas resize
       function(){
         $(this).resizable({
           grid: [5,5],
@@ -301,6 +301,7 @@ var ttd_canvas = {
     $('#canvas .images').append(li);
     
     this.setup();
+    ttd_output.write();
   },
   
   ratios: function(){
@@ -326,7 +327,8 @@ var ttd_output = {
   
   grid: function(){
     var cell_fit_w  = $('#overlay ul').width() / $('#w').val();
-    var output      = [cell_fit_w, []]; // This is a for the tetris.js script
+    var image_count = $('#canvas .images li').length;
+    var output      = [cell_fit_w, [], image_count]; // This is the pattern for the tetris.js script
     
     // Check cell status
     $('#overlay li').each(function(){
@@ -338,7 +340,7 @@ var ttd_output = {
     });
     
     // Write output
-    $('#output-grid code').html('[' + output[0].toString() + ', [' + output[1].toString() + ']]');
+    $('#output-grid code').html('[' + output[0].toString() + ', [' + output[1].toString() + '], ' + output[2] + ']');
   },
   
   html: function(){
