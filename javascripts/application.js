@@ -289,6 +289,8 @@ var ttd_canvas = {
               ttd_canvas.removeInfo($(this));
             }
     });
+    
+    ttd_output.write();
   },
   
   addImage: function(){
@@ -327,8 +329,8 @@ var ttd_output = {
   
   grid: function(){
     var cell_fit_w  = $('#overlay ul').width() / $('#w').val();
-    var image_count = $('#canvas .images li').length;
-    var output      = [cell_fit_w, [], image_count]; // This is the pattern for the tetris.js script
+    var ratios      = ttd_canvas.ratios();
+    var output      = [cell_fit_w, [], []]; // This is the pattern for the tetris.js script [horizontal cell count, [grid pattern], [image ratios]]
     
     // Check cell status
     $('#overlay li').each(function(){
@@ -339,8 +341,14 @@ var ttd_output = {
       output[1].push(value);
     });
     
+    // Get image ratios
+    $('#canvas .images li').each(function(){
+      var ratio = parseInt($(this).find('.ratio').attr('rel'));
+      output[2].push('\'' + ratios[ratio].name + '\'');
+    });
+    
     // Write output
-    $('#output-grid code').html('[' + output[0].toString() + ', [' + output[1].toString() + '], ' + output[2] + ']');
+    $('#output-grid code').html('[' + output[0].toString() + ', [' + output[1].toString() + '], [' + output[2] + ']]');
   },
   
   html: function(){
