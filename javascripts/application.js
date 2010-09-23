@@ -238,7 +238,7 @@ var ttd_canvas = {
   setImageRatio: function(el){
     var image      = el;
     var ratio_text = image.find('.ratio');
-    var ratios = this.ratios();
+    var ratios     = this.ratios();
     var current_ratio_idx = parseInt(ratio_text.attr('rel'), 10);
     
     // Reload events
@@ -315,7 +315,7 @@ var ttd_canvas = {
       {'name': '2/3',  'width': 120, 'height': 180 },
       {'name': '3/2',  'width': 180, 'height': 120 }, 
       {'name': '3/4',  'width': 120, 'height': 160 }, 
-      {'name': '4/3',  'width': 160, 'height': 140 }, 
+      {'name': '4/3',  'width': 160, 'height': 120 }, 
       {'name': '16/9', 'width': 160, 'height': 90  }, 
       {'name': '9/16', 'width': 90,  'height': 160 }, 
       {'name': '1/1',  'width': 100, 'height': 100 }
