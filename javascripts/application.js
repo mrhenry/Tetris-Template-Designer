@@ -378,7 +378,7 @@ var ttd_output = {
       // Get elements info
       var template    = $('#canvas');
       var hgroup      = template.find('hgroup');
-      var paragraph   = template.find('p');
+      var paragraph   = template.find('.intro');
       var images      = []; 
       
       // Get image info
