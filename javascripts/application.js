@@ -19,7 +19,16 @@ var ttd_settings = {
     var clone = $('#canvas').clone().attr('id', 'clone');
     $('#output-html .template').append(clone);
     
-    // Get previous grid size
+    // Save settings
+    if ($.cookie('ttd_settings')) {
+      console.log(JSON.parse($.cookie('ttd_settings')));
+    } else {
+      var settings = JSON.stringify({
+                       grid_cell_width: $('#w'),
+                       grid_cell_height: $('#h')
+                     });
+      $.cookie('ttd_settings', settings);
+    }
     
     // Input width & height
     $('#w, #h').keyup(function(){
