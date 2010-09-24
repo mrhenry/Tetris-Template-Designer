@@ -19,28 +19,25 @@ var ttd_settings = {
     var clone = $('#canvas').clone().attr('id', 'clone');
     $('#output-html .template').append(clone);
     
-    // Initialize everything
-    ttd_canvas.setup();
-    ttd_grid.toggle();
-    ttd_grid.setCellDimensions();
-    ttd_grid.buildGrid($('#w').val(), $('#h').val());
+    // Get previous grid size
     
     // Input width & height
     $('#w, #h').keyup(function(){
       ttd_grid.setCellDimensions();
     });
     
-    // Grid block clicks
-    $('#overlay li').live('click', function(){
-      $(this).toggleClass('active');
-      ttd_output.write();
+    // Use local image as background guide
+    $('#File').change(function(){
+      var img = $('#background');
+      var input = $(this)[0];
+      img.attr('src', input.files[0].getAsDataURL());
     });
     
-    // Use local image as guide
-    $('#File').change(function(){
-      var img = document.getElementById('background');
-      var input = $(this)[0];
-      img.src = input.files[0].getAsDataURL();
+    // Remove background image
+    $('.background-image .remove').click(function(e){
+      e.preventDefault();
+      $('#background').attr('src','');
+      $('#File').val('');
     });
     
     // Show / hide grid
@@ -49,9 +46,9 @@ var ttd_settings = {
     });
     
     // Add image
-    $('#add-image').click(function(){
+    $('#add-image').click(function(e){
+      e.preventDefault();
       ttd_canvas.addImage();
-      return false;
     });
     
     // CSS format
@@ -59,11 +56,38 @@ var ttd_settings = {
       ttd_output.write();
     });
     
+    // Copy to clipboard
+    $('.output .select').click(function(e){
+      e.preventDefault();
+      var range = document.createRange();
+      range.selectNode($(this).siblings('code')[0]);
+      window.getSelection().addRange(range);
+    });
+    
+    // Initialize everything
+    ttd_canvas.setup();
+    ttd_grid.setup();
   }
-   
+  
 };
 
 var ttd_grid = {
+  
+  setup: function(){
+    ttd_grid.toggle();
+    ttd_grid.setCellDimensions();
+    ttd_grid.buildGrid($('#w').val(), $('#h').val());
+    
+    // Selectable grid blocks
+    $('#overlay ul').selectable({
+      stop: function(){
+        $('.ui-selected').each(function(){
+          $(this).toggleClass('active');
+        });
+      }
+    });
+    
+  },
   
   setCellDimensions: function(){
     $('#overlay li').css({ 'width': ($('#w').val() - 1) + 'px', 'height': ($('#h').val() - 1) + 'px' });
@@ -374,6 +398,7 @@ var ttd_output = {
   
   css: function(){
     var format = $('.css-format input:radio:checked').val();
+    
     $.get('templates/template.' + format, function(data){
       // Get elements info
       var template    = $('#canvas');
@@ -410,7 +435,7 @@ var ttd_output = {
       var output = Mustache.to_html(data, view);
       $('#output-css code').html(output.replace(/\n/gm, '<br>').replace(/\t/gm, '&nbsp;&nbsp;'));
     });
-    
+
   }
   
 };

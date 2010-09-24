@@ -13,14 +13,8 @@
     google.load("jquery", "1.4");
     google.load("jqueryui", "1.8.1");
   </script>
-  <script src="javascripts/mustache.js"></script>
+  <script src="javascripts/plugins.js"></script>
   <script src="javascripts/application.js"></script>
-  <style type="text/css" media="screen">
-    .template-x { width: 0; height: 0; }
-    .template-x hgroup { position: absolute; top: 0; left: 0; width: 0; height: 0; }
-    .template-x .intro { position: absolute; top: 0; left: 0; width: 0; height: 0; }
-    .template-x .img-1 { position: absolute; top: 0; left: 0; width: 0; height: 0; }
-  </style>
 </head>
 <body>
   
@@ -36,9 +30,10 @@
     <label for="h">Height</label>
     <input id="h" name="h" type="text" value="100">
   </div>
-  <div class="line">
+  <div class="line background-image">
     <label for="File">Background image</label>
     <input id="File" name="File" type="file" />
+    <a href="#" class="remove">Remove background</a>
   </div>
   <div class="line">
     <label><a href="#" id="add-image">Add image</a></label>
@@ -75,7 +70,7 @@
 
 <!-- OUTPUT -->
 <div id="output-grid" class="output">
-  <h2>Grid output</h2>
+  <h2>Grid output</h2><a href="#" class="select">Select all</a>
   <code></code>
 </div>
 
