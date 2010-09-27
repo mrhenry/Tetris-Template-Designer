@@ -19,7 +19,7 @@ label { display: block; float: left; padding: 0 10px 0 0 ; width: 150px; text-al
 #canvas h2 a { color: #000; text-decoration: none; }
 #canvas h3 { display: inline; font-family: DINMedium; font-size: 1.4em; line-height: 1.8em; font-weight: normal; color: #CCC; }
 #canvas h3 a { text-decoration: none; }
-#canvas p { position: absolute; top: 30px; left: 10px; width: 120px; height: 30px;background: #EEE; opacity: 0.75; }
+#canvas p { margin 0; padding: 0; position: absolute; top: 30px; left: 10px; width: 120px; height: 30px; background: #EEE; opacity: 0.75; }
 #canvas .images { margin: 0; padding: 0; list-style: none; }
 #canvas .images li { position: absolute; top: 75px; left: 10px; width: 40px; height: 60px; background: #EEE; opacity: 0.75; }
 #canvas .images li .delete_btn,
