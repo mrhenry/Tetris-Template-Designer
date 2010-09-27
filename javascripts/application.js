@@ -19,28 +19,15 @@ var ttd_settings = {
     var clone = $('#canvas').clone().attr('id', 'clone');
     $('#output-html .template').append(clone);
     
-    // settings
-    if ($.cookie('ttd_settings')) {
-      var settings = JSON.parse($.cookie('ttd_settings'));
-      $('#w').val(settings.grid_cell_width);
-      $('#h').val(settings.grid_cell_height);
-      console.log(settings.grid_cell_width);
-    } else {
-      var settings = JSON.stringify({
-                       grid_cell_width: $('#w').val(),
-                       grid_cell_height: $('#h').val()
-                     });
-      $.cookie('ttd_settings', settings, { expires: 7 });
-    }
-    
     // Input width & height
     $('#w, #h').keyup(function(){
-      ttd_grid.setCellDimensions();
+      ttd_grid.setup();
+      ttd_settings.save();
     });
     
     // Use local image as background guide
     $('#File').change(function(){
-      var img = $('#background');
+      var img   = $('#background');
       var input = $(this)[0];
       img.attr('src', input.files[0].getAsDataURL());
     });
@@ -77,8 +64,29 @@ var ttd_settings = {
     });
     
     // Initialize everything
-    ttd_canvas.setup();
+    this.load();
+    
     ttd_grid.setup();
+    ttd_canvas.setup();
+  },
+  
+  load: function(){
+    var settings;
+    if ($.cookie('ttd_settings')) {
+      settings = JSON.parse($.cookie('ttd_settings'));
+      $('#w').val(settings.grid_cell_width);
+      $('#h').val(settings.grid_cell_height);
+    } else {
+      this.save_settings();
+    }
+  },
+  
+  save: function(){
+    settings = JSON.stringify({
+                 grid_cell_width: $('#w').val(),
+                 grid_cell_height: $('#h').val()
+               });
+    $.cookie('ttd_settings', settings, { expires: 7 });
   }
   
 };
@@ -88,7 +96,7 @@ var ttd_grid = {
   setup: function(){
     ttd_grid.toggle();
     ttd_grid.setCellDimensions();
-    ttd_grid.buildGrid($('#w').val(), $('#h').val());
+    ttd_grid.buildGrid(parseInt($('#canvas').css('width').replace('px', '')), parseInt($('#canvas').css('height').replace('px', '')));
     
     // Selectable grid blocks
     $('#overlay ul').selectable({
@@ -226,7 +234,9 @@ var ttd_canvas = {
     
     info.addClass('info')
         .html(text)
-        .show();
+        .show()
+        .delay(10000)
+        .fadeOut(300);
   },
   
   removeInfo: function(el){
@@ -370,7 +380,7 @@ var ttd_output = {
   grid: function(){
     var cell_fit_w  = $('#overlay ul').width() / $('#w').val();
     var ratios      = ttd_canvas.ratios();
-    var output      = [cell_fit_w, [], []]; // This is the pattern for the tetris.js script [horizontal cell count, [grid pattern], [image ratios]]
+    var output      = [cell_fit_w, [], [], [$('#w').val(), $('#h').val()]]; // This is the pattern for the tetris.js script [horizontal cell count, [grid pattern], [image ratios], [grid cell width, grid cell height]]
     
     // Check cell status
     $('#overlay li').each(function(){
@@ -388,7 +398,7 @@ var ttd_output = {
     });
     
     // Write output
-    $('#output-grid code').html('[' + output[0].toString() + ', [' + output[1].toString() + '], [' + output[2] + ']]');
+    $('#output-grid code').html('[' + output[0].toString() + ', [' + output[1].toString() + '], [' + output[2] + '], [' + output[3] + ']]');
   },
   
   html: function(){
