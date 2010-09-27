@@ -19,18 +19,15 @@ var ttd_settings = {
     var clone = $('#canvas').clone().attr('id', 'clone');
     $('#output-html .template').append(clone);
     
-    // settings
+    // Save settings
     if ($.cookie('ttd_settings')) {
-      var settings = JSON.parse($.cookie('ttd_settings'));
-      $('#w').val(settings.grid_cell_width);
-      $('#h').val(settings.grid_cell_height);
-      console.log(settings.grid_cell_width);
+      console.log(JSON.parse($.cookie('ttd_settings')));
     } else {
       var settings = JSON.stringify({
-                       grid_cell_width: $('#w').val(),
-                       grid_cell_height: $('#h').val()
+                       grid_cell_width: $('#w'),
+                       grid_cell_height: $('#h')
                      });
-      $.cookie('ttd_settings', settings, { expires: 7 });
+      $.cookie('ttd_settings', settings);
     }
     
     // Input width & height
