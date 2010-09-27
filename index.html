@@ -49,6 +49,17 @@
     <input type="radio" id="css-format-scss" name="css-format" value="scss" checked="checked">
     <label for="css-format-scss">SCSS</label>
   </div>
+  <div class="line">
+    <label for="output-grid">Grid code</label>
+    <input type="text" name="output-grid">
+  </div>
+  <div class="line">
+    <label for="output-css">CSS code</label>
+    <textarea name="output-css"></textarea>
+  </div>
+  <div class="line load-template">
+    <button type="submit">Load</button>
+  </div>
 </form>
 
 <!-- DESIGNER -->
@@ -75,7 +86,6 @@
 <div id="output-grid" class="output">
   <h2>Grid output</h2><a href="#" class="select">Select all</a>
   <code></code>
-  <input type="text" name="output-grid">
 </div>
 
 <div id="output-html" class="output">

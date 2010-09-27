@@ -63,6 +63,13 @@ var ttd_settings = {
       window.getSelection().addRange(range);
     });
     
+    // Load template
+    $('.load-template button').click(function(e){
+      e.preventDefault();
+      var grid_input  = $('input[name=output-grid]').val();
+      var css_input   = $('textarea[name=output-css]').val();
+    });
+    
     // Initialize everything
     this.load();
     
@@ -155,13 +162,29 @@ var ttd_grid = {
   
   toggle: function(){
     var overlay = $('#overlay');
-    if ($('#show-grid').attr('checked')) {
-      overlay.show();
-    } else {
+    if (overlay.is(':visible')) {
       overlay.hide();
+      $('#show-grid').attr('checked', '');
+    } else {
+      overlay.show();
+      $('#show-grid').attr('checked', 'checked');
     }
-  }
+    //if ($('#show-grid').attr('checked')) {
+    //  overlay.show();
+    //} else {
+    //  overlay.hide();
+    //}
+  },
   
+  getWidth: function(){
+    // We have to show the grid, otherwise we can't measure it..
+    $('#overlay').show();
+    var width = $('#overlay ul').width();
+    if (!$('#show-grid').attr('checked')) {
+      $('#overlay').hide();
+    }
+    return width;
+  }
 };
 
 var ttd_canvas = {
@@ -378,7 +401,7 @@ var ttd_output = {
   },
   
   grid: function(){
-    var cell_fit_w  = $('#overlay ul').width() / $('#w').val();
+    var cell_fit_w  = ttd_grid.getWidth() / $('#w').val();
     var ratios      = ttd_canvas.ratios();
     var output      = [cell_fit_w, [], [], [$('#w').val(), $('#h').val()]]; // This is the pattern for the tetris.js script [horizontal cell count, [grid pattern], [image ratios], [grid cell width, grid cell height]]
     
