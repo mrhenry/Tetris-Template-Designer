@@ -1,0 +1,49 @@
+/* >> The Magnificent CLEARFIX << j.mp/phayesclearfix */
+.clearfix:after  { content: "\0020"; display: block; height: 0; clear: both; visibility: hidden; }
+/* Fix clearfix: blueprintcss.lighthouseapp.com/projects/15318/tickets/5-extra-margin-padding-bottom-of-page */
+.clearfix { zoom: 1; }
+body    { padding: 0; margin: 0; font: 0.69em/1.5em Georgia; background: #D1D8DF; }
+form    { margin: 0 0 20px 0; border-bottom: 1px solid #EEE; padding: 20px; background: #31404F; color: #A4ADB0; }
+h1      { color: #EEE; font-weight: normal; font-size: 3em; }
+h2      { font-size: 1.4em; font-weight: normal; margin-bottom: 2em; }
+a       { color: #FC0284; }
+.line   { margin-bottom: 10px; clear: both; }
+
+label,
+.radio p        { display: block; float: left; padding: 0 10px 0 0 ; width: 150px; text-align: right; font-style: italic; line-height: 1.8em;}
+.radio p        { margin-top: 0; }
+.radio label    { display: inline; float: none; width: auto; }
+
+#designer { margin: 20px; position: relative; }
+#background { position: absolute; top: 0; left: 0; }
+
+#canvas { position: absolute; top: 0; left: 0; width: 200px; height: 200px; border: 1px dotted; }
+#canvas hgroup { position: absolute; top: 0px; left: 10px; width: 120px; height: 30px; background: #EEE; opacity: 0.75; }
+#canvas h2 { display: inline; font-family: DINMedium; font-size: 1.4em; line-height: 1.8em; font-weight: normal; }
+#canvas h2 a { color: #000; text-decoration: none; }
+#canvas h3 { display: inline; font-family: DINMedium; font-size: 1.4em; line-height: 1.8em; font-weight: normal; color: #CCC; }
+#canvas h3 a { text-decoration: none; }
+#canvas .intro { position: absolute; top: 30px; left: 10px; width: 120px; height: 30px;background: #EEE; opacity: 0.75; }
+#canvas .images { margin: 0; padding: 0; list-style: none; }
+#canvas .images li { position: absolute; top: 75px; left: 10px; width: 40px; height: 60px; background: #EEE; opacity: 0.75; }
+#canvas .images li .delete_btn,
+#canvas .images li .ratio_btn { position: absolute; top: 0; right: 0; width: 10px; height: 10px; background: #AAA; cursor: pointer; }
+#canvas .images li .ratio_btn { top: auto; bottom: 0; left: 0; right: auto; }
+#canvas .images li .delete_btn:hover,
+#canvas .images li .ratio_btn:hover { background: #FC0284; }
+
+#canvas .images li .id { font-size: 2em; padding: 0 5px 0 0; }
+#canvas .info { position: absolute; right: 0; top: -35px; height: 30px; font-size: 1em; text-align: right; white-space: nowrap; }
+
+
+#overlay { position: absolute; top: 0; left: 0; width: 100px; height: 100px; border: 1px dotted #AAA; overflow: visible; }
+#overlay ul { margin: 0; padding: 0; list-style: none; }
+#overlay li { float: left; margin: 0 1px 1px 0; border-right: 1px; width: 99px; height: 99px; background: cyan; opacity: 0.3; }
+#overlay .active { opacity: 0.75; }
+
+.output { padding: 20px; }
+.output h2 { margin-bottom: 1em; }
+.output code { display: block; padding: 10px; background: #FFF; white-space: nowrap; }
+.output .template { display: none; }
+
+footer { display: block; padding: 50px 20px 20px 20px; color: #999; font-style: italic; }

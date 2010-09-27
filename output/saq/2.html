@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="description" content="">
+
+  <title>Tetris Template Designer &trade;</title>
+  <link rel="stylesheet" href="stylesheets/flick/jquery-ui-1.8.4.custom.css" media="screen">
+  <link rel="stylesheet" href="stylesheets/screen.css" media="screen">
+  
+  <script src="http://www.google.com/jsapi?key="></script>
+  <script>
+    google.load("jquery", "1.4");
+    google.load("jqueryui", "1.8.1");
+  </script>
+  <script src="javascripts/json2.js"></script>
+  <script src="javascripts/plugins.js"></script>
+  <script src="javascripts/application.js"></script>
+</head>
+<body>
+  
+<!-- SETTINGS -->
+<form action="#" method="get">
+  <h1>Tetris template designer</h1>
+  <h2>Choose the size (px) of your grid cell and set your background image.</h2>
+  <div class="line">
+    <label for="w">Width</label>
+    <input id="w" name="w" type="text" value="100">
+  </div>
+  <div class="line">
+    <label for="h">Height</label>
+    <input id="h" name="h" type="text" value="100">
+  </div>
+  <div class="line background-image">
+    <label for="File">Background image</label>
+    <input id="File" name="File" type="file" />
+    <a href="#" class="remove">Remove background</a>
+  </div>
+  <div class="line">
+    <label><a href="#" id="add-image">Add image</a></label>
+  </div>
+  <div class="line">
+    <label for="show-grid">Show grid</label><input id="show-grid" name="show-grid" type="checkbox">
+  </div>
+  <div class="line radio css-format">
+    <p>In which format you want your CSS output?</p>
+    <input type="radio" id="css-format-css" name="css-format" value="css">
+    <label for="css-format-css">CSS</label>
+    <input type="radio" id="css-format-scss" name="css-format" value="scss" checked="checked">
+    <label for="css-format-scss">SCSS</label>
+  </div>
+</form>
+
+<!-- DESIGNER -->
+<div id="designer">
+  <img id="background" src="" alt="">
+  <article id="canvas">
+    <hgroup>
+        <h2><a href="/" title="View this project in detail">Title</a></h2>
+        <h3>Category</h3>
+      </hgroup>
+      <div class="intro">Text</div>
+      <ul class="images">
+        <li class="img-1"><span class="id">1</span> <span class="ratio" rel="0">2/3</span><img src="" alt=""></li>
+      </ul>
+  </article><!-- End #canvas -->
+  <div id="overlay">
+    <ul class="clearfix"></ul>
+  </div><!-- End #overlay -->
+</div><!-- End #designer -->
+
+<!-- OUTPUT -->
+<div id="output-grid" class="output">
+  <h2>Grid output</h2><a href="#" class="select">Select all</a>
+  <code></code>
+</div>
+
+<div id="output-html" class="output">
+  <h2>HTML output</h2>
+  <code></code>
+  <div class="template"></div>
+</div>
+
+<div id="output-css" class="output">
+  <h2>CSS output</h2>
+  <code></code>
+  <div class="template">
+    
+  </div>
+</div>
+
+<footer>
+  Crafted by <a href="http://www.mrhenry.be">Mr. Henry</a> &nbsp; &copy; 2010. 
+</footer>
+
+</body>
+</html>
