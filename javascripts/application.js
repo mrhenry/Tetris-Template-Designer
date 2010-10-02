@@ -84,7 +84,7 @@ var ttd_settings = {
       $('#w').val(settings.grid_cell_width);
       $('#h').val(settings.grid_cell_height);
     } else {
-      this.save_settings();
+      this.save();
     }
   },
   
